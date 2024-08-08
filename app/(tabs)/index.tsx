@@ -5,7 +5,7 @@ import {Category} from "@/components/Category";
 import {API} from "@/constants/API";
 
 export default function HomeScreen() {
-    // const [selectedTaskId, setSelectedTaskId] = useState<null | number>(null);
+    const [selectedTaskId, setSelectedTaskId] = useState<null | string>(null);
     const [categories, setCategories] = useState<Array<{ title: string, id: string }>>([]);
 
     useEffect(() => {
@@ -23,10 +23,17 @@ export default function HomeScreen() {
               <Text style={styles.title}>Soft skills trainer</Text>
           </ImageBackground>
           <View style={styles.categoryContainer}>
-          {categories.map(({ id, title }) => (
-              <Category title={title} id={id} key={id} />
-          ))}
+              {categories.map(({ id, title }) => (
+                  <Category
+                      title={title}
+                      id={id}
+                      key={id}
+                      selectedTaskId={selectedTaskId}
+                      setSelectedTaskId={setSelectedTaskId}
+                  />
+              ))}
           </View>
+
       </SafeAreaView>
   );
 }
@@ -35,6 +42,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 10,
         gap: 8,
+        position: 'static',
     },
   title: {
     fontSize: 20,
@@ -48,5 +56,6 @@ const styles = StyleSheet.create({
     },
   categoryContainer: {
         paddingTop: 20,
+      position: 'static'
   }
 });
