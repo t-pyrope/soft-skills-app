@@ -5,11 +5,6 @@ import {useForm} from "react-hook-form";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {CustomInput} from "@/components/ui/CustomInput";
 
-export type LoginFieldValues = {
-    email: string,
-    password: string,
-}
-
 export default function LoginModal () {
     const {
         control,
@@ -22,15 +17,21 @@ export default function LoginModal () {
         }
     })
 
-    // const login = async () => {
-    //     const response = await fetch(`${API}/login`, {
-    //         method: 'POST',
-    //         body: JSON.stringify({ email, password })
-    //     })
-    // }
+    const onSubmit = handleSubmit(async (data) => {
+        try {
+            const response = await fetch(`${API}/login`, {
+                method: 'POST',
+                body: JSON.stringify({ email: data.email, password: data.password }),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
-    const onSubmit = handleSubmit((data) => {
-        console.log('data', data);
+            const json = await response.json();
+            console.log(json);
+        } catch (e) {
+            console.error(e);
+        }
     })
 
     const getErrorMessage = (type: string) => {
@@ -63,7 +64,7 @@ export default function LoginModal () {
                     control={control}
                     rules={{
                         required: true,
-                        minLength: 8,
+                        minLength: 3,
                     }}
                     errorMessage={!!errors.password?.type ? getErrorMessage(errors.password.type) : ''}
                     placeholder={'Password'}
