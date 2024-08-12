@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import {Link} from "expo-router";
 import {StyleSheet, FlatList, Text, View, Pressable} from 'react-native';
 import {SafeAreaView} from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {getValueFromSecureStore} from "@/helpers/secure-store";
 import {getValueFromAsyncStore} from "@/helpers/async-store";
+import CustomLink from "@/components/ui/CustomLink";
 
 export default function TabTwoScreen() {
     const [token, setToken] = useState('token')
@@ -49,13 +49,14 @@ export default function TabTwoScreen() {
                 </View>
             </Pressable>
         </View>
+
         <FlatList
             data={data}
             renderItem={({ item }) => (
                 <View style={{ marginTop: 8 }}>
-                <Link href={`../${item.id}`}>
+                <CustomLink href={`../${item.id}`}>
                     {item.title}
-                </Link>
+                </CustomLink>
                 </View>
             )}
         />
@@ -70,4 +71,8 @@ const styles = StyleSheet.create({
     gap: 8,
     position: 'static',
   },
+    link: {
+        textDecorationLine: 'underline',
+        color: '',
+    },
 });
