@@ -39,10 +39,16 @@ export default function RootLayout() {
             name="login"
             options={{
                 title: 'Login',
-                // Set the presentation mode to modal for our modal route.
                 presentation: 'modal',
             }}
         />
+          <Stack.Screen
+              name="register"
+              options={{
+                  title: 'Register',
+                  presentation: 'modal',
+              }}
+          />
       </Stack>
       </SafeAreaProvider>
         </RootSiblingParent>

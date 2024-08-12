@@ -53,7 +53,7 @@ export default function TabTwoScreen() {
             data={data}
             renderItem={({ item }) => (
                 <View style={{ marginTop: 8 }}>
-                <Link href={'../login'}>
+                <Link href={`../${item.id}`}>
                     {item.title}
                 </Link>
                 </View>
