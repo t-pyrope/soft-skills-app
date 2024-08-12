@@ -1,4 +1,4 @@
-import {Platform, Text, View, Pressable} from "react-native";
+import {Platform, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import {useForm} from "react-hook-form";
 import {SafeAreaView} from "react-native-safe-area-context";
@@ -11,6 +11,7 @@ import {CustomInput} from "@/components/ui/CustomInput";
 import {saveToSecureStore} from "@/helpers/secure-store";
 import {saveToAsyncStore} from "@/helpers/async-store";
 import {ERROR_COLOR} from "@/constants/Colors";
+import {CustomButton} from "@/components/ui/CustomButton";
 
 export default function LoginModal () {
     const {
@@ -91,12 +92,17 @@ export default function LoginModal () {
                 />
 
                 <View>
-                    <Pressable
+                    <CustomButton
                         onPress={onSubmit}
                         disabled={!isDirty || Object.keys(errors).length > 0}
-                    >
-                        <Text>Login</Text>
-                    </Pressable>
+                        text={'Login'}
+                    />
+                </View>
+                <View style={{ marginTop: 4 }}>
+                    <CustomButton
+                        type={'transparent'}
+                        text={'Register'}
+                    />
                 </View>
             </View>
 

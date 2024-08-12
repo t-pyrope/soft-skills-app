@@ -38,8 +38,9 @@ export default function RootLayout() {
         <Stack.Screen
             name="login"
             options={{
-              // Set the presentation mode to modal for our modal route.
-              presentation: 'modal',
+                title: 'Login',
+                // Set the presentation mode to modal for our modal route.
+                presentation: 'modal',
             }}
         />
       </Stack>
