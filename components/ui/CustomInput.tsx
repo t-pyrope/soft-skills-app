@@ -1,6 +1,7 @@
 import {Controller, FieldValues, RegisterOptions} from "react-hook-form";
 import {StyleSheet, TextInput, View} from "react-native";
 import Animated, {FadeIn, FadeOut} from "react-native-reanimated";
+import {ERROR_COLOR} from "@/constants/Colors";
 
 export const CustomInput = ({
     control,
@@ -53,9 +54,9 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     error: {
-        borderColor: '#E3000E',
+        borderColor: ERROR_COLOR,
     },
     errorMessage: {
-        color: '#E3000E',
+        color: ERROR_COLOR,
     }
 });

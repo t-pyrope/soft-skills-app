@@ -1,12 +1,16 @@
 import {Platform, Text, View, Pressable} from "react-native";
 import {StatusBar} from "expo-status-bar";
-import {API} from "@/constants/API";
 import {useForm} from "react-hook-form";
 import {SafeAreaView} from "react-native-safe-area-context";
+import Toast from 'react-native-root-toast';
+import { router } from 'expo-router';
+
+import {API} from "@/constants/API";
 import {CustomInput} from "@/components/ui/CustomInput";
 
 import {saveToSecureStore} from "@/helpers/secure-store";
 import {saveToAsyncStore} from "@/helpers/async-store";
+import {ERROR_COLOR} from "@/constants/Colors";
 
 export default function LoginModal () {
     const {
@@ -31,19 +35,18 @@ export default function LoginModal () {
             });
 
             const json = await response.json();
-            console.log(json);
 
-            if ('token' in json) {
+            if ('error' in json) {
+                Toast.show(json.error, {
+                    backgroundColor: ERROR_COLOR,
+                    shadow: false,
+                })
+            } else {
                 await saveToSecureStore('token', json.token);
-            }
-            if ('user' in json) {
-                if ('email' in json.user) {
-                    await saveToAsyncStore('email', json.user.email);
-                }
+                await saveToAsyncStore('email', json.user.email);
+                await saveToAsyncStore('displayName', json.user.displayName);
 
-                if ('displayName' in json.user) {
-                    await saveToAsyncStore('displayName', json.user.displayName);
-                }
+                router.navigate('/profile');
             }
         } catch (e) {
             console.error(e);
