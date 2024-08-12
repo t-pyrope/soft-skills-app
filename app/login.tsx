@@ -8,12 +8,12 @@ import { router } from 'expo-router';
 import {API} from "@/constants/API";
 import {CustomInput} from "@/components/ui/CustomInput";
 
-import {saveToSecureStore} from "@/helpers/secure-store";
-import {saveToAsyncStore} from "@/helpers/async-store";
 import {ERROR_COLOR} from "@/constants/Colors";
 import {CustomButton} from "@/components/ui/CustomButton";
+import {useAppContext} from "@/context/AppContext";
 
 export default function LoginModal () {
+    const { loginLocally } = useAppContext();
     const {
         control,
         handleSubmit,
@@ -43,10 +43,7 @@ export default function LoginModal () {
                     shadow: false,
                 })
             } else {
-                await saveToSecureStore('token', json.token);
-                await saveToAsyncStore('email', json.user.email);
-                await saveToAsyncStore('displayName', json.user.displayName);
-
+                await loginLocally(json.token, json.user.email, json.user.displayName);
                 router.navigate('/profile');
             }
         } catch (e) {

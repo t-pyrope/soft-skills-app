@@ -15,3 +15,13 @@ export const getValueFromAsyncStore = async (key: string) => {
         console.error(e);
     }
 }
+
+export const deleteValueFromAsyncStore = async (key: string) => {
+    try {
+        await AsyncStorage.removeItem(key);
+        return true;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}

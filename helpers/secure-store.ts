@@ -26,3 +26,17 @@ export const getValueFromSecureStore = async (key: string) => {
         return null;
     }
 }
+
+export const deleteValueFromSecureStore = async (key: string) => {
+    try {
+        if (Platform.OS === 'web') {
+            await AsyncStorage.removeItem(key)
+        } else {
+            await SecureStore.deleteItemAsync(key);
+        }
+        return true;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}

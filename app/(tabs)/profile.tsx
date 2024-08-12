@@ -1,42 +1,38 @@
-import {useEffect, useState} from "react";
 import {StyleSheet, FlatList, Text, View, Pressable} from 'react-native';
 import {SafeAreaView} from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import {getValueFromSecureStore} from "@/helpers/secure-store";
-import {getValueFromAsyncStore} from "@/helpers/async-store";
 import CustomLink from "@/components/ui/CustomLink";
+import {CustomButton} from "@/components/ui/CustomButton";
+import {API} from "@/constants/API";
+import {useAppContext} from "@/context/AppContext";
 
 export default function TabTwoScreen() {
-    const [token, setToken] = useState('token')
-    const [email, setEmail] = useState('no email');
-    const [displayName, setDisplayName] = useState('Red bunny');
+    const { token, displayName, logoutLocally } = useAppContext();
 
     const data = [
-    { id: 'login', title: 'Login' },
-    { id: 'register', title: 'Register' }
-  ];
+        { id: 'login', title: 'Login' },
+        { id: 'register', title: 'Register' }
+    ];
 
-  useEffect(() => {
-      getValueFromSecureStore('token')
-          .then((value) => {
-              if (value) {
-                  setToken(value);
+    const logout = async () => {
+      try {
+          const response = await fetch(`${API}/logout`, {
+              method: 'POST',
+              headers: {
+                  Authorization: `Bearer ${token}`,
               }
           })
 
-      getValueFromAsyncStore('email').then((val) => {
-          if (val) {
-              setEmail(val)
-          }
-      })
+          const json = await response.json();
 
-      getValueFromAsyncStore('displayName').then((val) => {
-          if (val) {
-              setDisplayName(val);
+          if (json.ok) {
+              logoutLocally();
           }
-      })
-  }, [])
+      } catch (e) {
+          console.error(e);
+      }
+    }
 
   return (
       <SafeAreaView style={styles.container}>
@@ -50,17 +46,25 @@ export default function TabTwoScreen() {
             </Pressable>
         </View>
 
-        <FlatList
-            data={data}
-            renderItem={({ item }) => (
-                <View style={{ marginTop: 8 }}>
-                <CustomLink href={`../${item.id}`}>
-                    {item.title}
-                </CustomLink>
-                </View>
-            )}
-        />
-          <Text>Token: {token}</Text>
+          {!token ? (
+              <FlatList
+                  data={data}
+                  renderItem={({ item }) => (
+                      <View style={{ marginTop: 8 }}>
+                          <CustomLink href={`../${item.id}`}>
+                              {item.title}
+                          </CustomLink>
+                      </View>
+                  )}
+              />
+          ) : (
+              <CustomButton
+                  text={'Log out'}
+                  size={'small'}
+                  type={'transparent'}
+                  onPress={logout}
+              />
+          )}
       </SafeAreaView>
   );
 }

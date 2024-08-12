@@ -5,9 +5,10 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-reanimated';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import {SafeAreaProvider} from "react-native-safe-area-context";
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import {SafeAreaProvider} from "react-native-safe-area-context";
+import {AppContextProvider} from "@/context/AppContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,6 +31,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <AppContextProvider>
         <RootSiblingParent>
       <SafeAreaProvider>
       <Stack>
@@ -52,6 +54,7 @@ export default function RootLayout() {
       </Stack>
       </SafeAreaProvider>
         </RootSiblingParent>
+        </AppContextProvider>
     </ThemeProvider>
   );
 }
