@@ -1,9 +1,12 @@
-import {Platform, View, Button} from "react-native";
+import {Platform, Text, View, Pressable} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import {API} from "@/constants/API";
 import {useForm} from "react-hook-form";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {CustomInput} from "@/components/ui/CustomInput";
+
+import {saveToSecureStore} from "@/helpers/secure-store";
+import {saveToAsyncStore} from "@/helpers/async-store";
 
 export default function LoginModal () {
     const {
@@ -29,6 +32,19 @@ export default function LoginModal () {
 
             const json = await response.json();
             console.log(json);
+
+            if ('token' in json) {
+                await saveToSecureStore('token', json.token);
+            }
+            if ('user' in json) {
+                if ('email' in json.user) {
+                    await saveToAsyncStore('email', json.user.email);
+                }
+
+                if ('displayName' in json.user) {
+                    await saveToAsyncStore('displayName', json.user.displayName);
+                }
+            }
         } catch (e) {
             console.error(e);
         }
@@ -71,12 +87,13 @@ export default function LoginModal () {
                     name={'password'}
                 />
 
-                <View style={{ }}>
-                <Button
-                    title={'Login'}
-                    onPress={onSubmit}
-                    disabled={!isDirty || Object.keys(errors).length > 0}
-                />
+                <View>
+                    <Pressable
+                        onPress={onSubmit}
+                        disabled={!isDirty || Object.keys(errors).length > 0}
+                    >
+                        <Text>Login</Text>
+                    </Pressable>
                 </View>
             </View>
 
