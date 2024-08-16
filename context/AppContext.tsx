@@ -1,23 +1,27 @@
-import {createContext, ReactNode, useCallback, useContext, useEffect, useState} from "react";
-import {deleteValueFromSecureStore, getValueFromSecureStore, saveToSecureStore} from "@/helpers/secure-store";
-import {deleteValueFromAsyncStore, saveToAsyncStore} from "@/helpers/async-store";
-import {API} from "@/constants/API";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import {
+    deleteValueFromSecureStore,
+    getValueFromSecureStore,
+    saveToSecureStore,
+} from '@/helpers/secure-store';
+import { deleteValueFromAsyncStore, saveToAsyncStore } from '@/helpers/async-store';
+import { API } from '@/constants/API';
 
 type AppContextType = {
-    token: string,
-    displayName: string,
-    email: string,
-    logoutLocally: () => void,
-    loginLocally: (token: string, email: string, displayName: string) => void,
-}
+    token: string;
+    displayName: string;
+    email: string;
+    logoutLocally: () => void;
+    loginLocally: (token: string, email: string, displayName: string) => void;
+};
 
 const initialContext: AppContextType = {
     token: '',
     displayName: '',
     email: '',
     logoutLocally: () => {},
-    loginLocally: () => {}
-}
+    loginLocally: () => {},
+};
 
 const AppContext = createContext(initialContext);
 
@@ -37,9 +41,9 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             const meResponse = await fetch(`${API}/me`, {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${tokenValue}`
-                }
-            })
+                    Authorization: `Bearer ${tokenValue}`,
+                },
+            });
 
             const meJSON = await meResponse.json();
 
@@ -52,20 +56,23 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
                 await deleteValueFromAsyncStore('email');
                 await deleteValueFromAsyncStore('displayName');
             }
-
         } catch (e) {
             console.error(e);
         }
-    }
+    };
 
     useEffect(() => {
         setValues();
-    }, [])
+    }, []);
 
     const logoutLocally = useCallback(async () => {
         setToken('');
         setEmail('');
         setDisplayName('Red bunny');
+
+        await deleteValueFromSecureStore('token');
+        await deleteValueFromAsyncStore('email');
+        await deleteValueFromAsyncStore('displayName');
     }, []);
 
     const loginLocally = useCallback(async (token: string, email: string, displayName: string) => {
@@ -80,19 +87,21 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         } catch (e) {
             console.error(e);
         }
-    }, [])
+    }, []);
 
     return (
-        <AppContext.Provider value={{
-            token,
-            displayName,
-            email,
-            logoutLocally,
-            loginLocally,
-        }}>
+        <AppContext.Provider
+            value={{
+                token,
+                displayName,
+                email,
+                logoutLocally,
+                loginLocally,
+            }}
+        >
             {children}
         </AppContext.Provider>
-    )
-}
+    );
+};
 
 export const useAppContext = () => useContext(AppContext);

@@ -6,7 +6,7 @@ export const saveToAsyncStore = async (key: string, value: string) => {
     } catch (e) {
         console.error(e);
     }
-}
+};
 
 export const getValueFromAsyncStore = async (key: string) => {
     try {
@@ -14,7 +14,7 @@ export const getValueFromAsyncStore = async (key: string) => {
     } catch (e) {
         console.error(e);
     }
-}
+};
 
 export const deleteValueFromAsyncStore = async (key: string) => {
     try {
@@ -24,4 +24,4 @@ export const deleteValueFromAsyncStore = async (key: string) => {
         console.error(e);
         return false;
     }
-}
+};

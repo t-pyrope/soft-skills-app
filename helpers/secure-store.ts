@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
-import {Platform} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const saveToSecureStore = async (key: string, value: string) => {
     try {
@@ -12,7 +12,7 @@ export const saveToSecureStore = async (key: string, value: string) => {
     } catch (e) {
         console.error(e);
     }
-}
+};
 
 export const getValueFromSecureStore = async (key: string) => {
     try {
@@ -25,12 +25,12 @@ export const getValueFromSecureStore = async (key: string) => {
         console.error(e);
         return null;
     }
-}
+};
 
 export const deleteValueFromSecureStore = async (key: string) => {
     try {
         if (Platform.OS === 'web') {
-            await AsyncStorage.removeItem(key)
+            await AsyncStorage.removeItem(key);
         } else {
             await SecureStore.deleteItemAsync(key);
         }
@@ -39,4 +39,4 @@ export const deleteValueFromSecureStore = async (key: string) => {
         console.error(e);
         return false;
     }
-}
+};

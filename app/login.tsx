@@ -1,31 +1,31 @@
-import {Platform, View} from "react-native";
-import {StatusBar} from "expo-status-bar";
-import {useForm} from "react-hook-form";
-import {SafeAreaView} from "react-native-safe-area-context";
+import { Platform, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useForm } from 'react-hook-form';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-root-toast';
 import { router } from 'expo-router';
 
-import {API} from "@/constants/API";
-import {CustomInput} from "@/components/ui/CustomInput";
+import { API } from '@/constants/API';
+import { CustomInput } from '@/components/ui/CustomInput';
 
-import {ERROR_COLOR} from "@/constants/Colors";
-import {CustomButton} from "@/components/ui/CustomButton";
-import {useAppContext} from "@/context/AppContext";
-import {EMAIL_RULES, PASSWORD_RULES} from "@/constants/login";
-import {getErrorMessage} from "@/helpers/login";
+import { ERROR_COLOR } from '@/constants/Colors';
+import { CustomButton } from '@/components/ui/CustomButton';
+import { useAppContext } from '@/context/AppContext';
+import { EMAIL_RULES, PASSWORD_RULES } from '@/constants/login';
+import { getErrorMessage } from '@/helpers/login';
 
-export default function LoginModal () {
+export default function LoginModal() {
     const { loginLocally } = useAppContext();
     const {
         control,
         handleSubmit,
-        formState: { errors, isDirty }
+        formState: { errors, isDirty },
     } = useForm({
         defaultValues: {
             email: '',
-            password: ''
-        }
-    })
+            password: '',
+        },
+    });
 
     const onSubmit = handleSubmit(async (data) => {
         try {
@@ -34,7 +34,7 @@ export default function LoginModal () {
                 body: JSON.stringify({ email: data.email, password: data.password }),
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
             });
 
             const json = await response.json();
@@ -44,7 +44,7 @@ export default function LoginModal () {
                 Toast.show(json.error, {
                     backgroundColor: ERROR_COLOR,
                     shadow: false,
-                })
+                });
             } else {
                 await loginLocally(json.token, json.user.email, json.user.displayName);
                 router.navigate('/profile');
@@ -52,7 +52,7 @@ export default function LoginModal () {
         } catch (e) {
             console.error(e);
         }
-    })
+    });
 
     return (
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -68,7 +68,9 @@ export default function LoginModal () {
                 <CustomInput
                     control={control}
                     rules={PASSWORD_RULES}
-                    errorMessage={!!errors.password?.type ? getErrorMessage(errors.password.type) : ''}
+                    errorMessage={
+                        !!errors.password?.type ? getErrorMessage(errors.password.type) : ''
+                    }
                     placeholder={'Password'}
                     name={'password'}
                 />
@@ -91,5 +93,5 @@ export default function LoginModal () {
 
             <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
         </SafeAreaView>
-    )
+    );
 }

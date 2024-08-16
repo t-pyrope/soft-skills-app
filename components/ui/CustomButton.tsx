@@ -1,28 +1,34 @@
-import {Pressable, PressableProps, StyleSheet, Text} from "react-native";
-import {useThemeColor} from "@/hooks/useThemeColor";
-import {Colors} from "@/constants/Colors";
+import { Pressable, PressableProps, StyleSheet, Text } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { Colors } from '@/constants/Colors';
 
-export const CustomButton = ({ type = 'button', size = 'large', text, ...rest }: PressableProps & {
-    type?: keyof typeof Colors.light & keyof typeof Colors.dark,
-    text: string,
-    size?: 'small' | 'large',
+export const CustomButton = ({
+    type = 'button',
+    size = 'large',
+    text,
+    ...rest
+}: PressableProps & {
+    type?: keyof typeof Colors.light & keyof typeof Colors.dark;
+    text: string;
+    size?: 'small' | 'large';
 }) => {
     const backgroundColor = useThemeColor({}, type);
     const isLink = type === 'transparent';
-    const color = useThemeColor({}, isLink ? 'link' : 'text' );
+    const color = useThemeColor({}, isLink ? 'link' : 'text');
 
     return (
-        <Pressable { ...rest } style={[
-            styles.button,
-            { backgroundColor },
-            // size === 'small' && styles.small,
-        ]}>
-            <Text style={{ color, textDecorationLine: isLink ? 'underline' : 'none' }}>
-                {text}
-            </Text>
+        <Pressable
+            {...rest}
+            style={[
+                styles.button,
+                { backgroundColor },
+                // size === 'small' && styles.small,
+            ]}
+        >
+            <Text style={{ color, textDecorationLine: isLink ? 'underline' : 'none' }}>{text}</Text>
         </Pressable>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     button: {
@@ -38,4 +44,4 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
         justifyContent: 'flex-start',
     },
-})
+});

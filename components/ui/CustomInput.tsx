@@ -1,7 +1,7 @@
-import {Controller, FieldValues, RegisterOptions} from "react-hook-form";
-import {StyleSheet, TextInput, View} from "react-native";
-import Animated, {FadeIn, FadeOut} from "react-native-reanimated";
-import {ERROR_COLOR} from "@/constants/Colors";
+import { Controller, FieldValues, RegisterOptions } from 'react-hook-form';
+import { StyleSheet, TextInput, View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { ERROR_COLOR } from '@/constants/Colors';
 
 export const CustomInput = ({
     control,
@@ -11,7 +11,10 @@ export const CustomInput = ({
     name,
 }: {
     control: any;
-    rules: Omit<RegisterOptions<FieldValues, string>, "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled">;
+    rules: Omit<
+        RegisterOptions<FieldValues, string>,
+        'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+    >;
     errorMessage: string;
     placeholder: string;
     name: string;
@@ -34,18 +37,14 @@ export const CustomInput = ({
             />
             <View style={{ height: 23 }}>
                 {!!errorMessage && (
-                    <Animated.Text
-                        entering={FadeIn}
-                        exiting={FadeOut}
-                        style={styles.errorMessage}
-                    >
+                    <Animated.Text entering={FadeIn} exiting={FadeOut} style={styles.errorMessage}>
                         {errorMessage}
                     </Animated.Text>
                 )}
             </View>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     input: {
@@ -58,5 +57,5 @@ const styles = StyleSheet.create({
     },
     errorMessage: {
         color: ERROR_COLOR,
-    }
+    },
 });
