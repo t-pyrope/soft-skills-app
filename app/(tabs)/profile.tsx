@@ -41,7 +41,7 @@ export default function TabTwoScreen() {
             <Pressable>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                     <Text style={{ fontSize: 20 }}>{displayName}</Text>
-                    <Ionicons name="pencil" size={20} />
+                    {/*<Ionicons name="pencil" size={20} />*/}
                 </View>
             </Pressable>
         </View>

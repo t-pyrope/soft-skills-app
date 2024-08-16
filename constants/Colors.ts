@@ -6,6 +6,7 @@
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 export const ERROR_COLOR = '#E3000E';
+export const SUCCESS_COLOR = '#d0da8e';
 
 export const Colors = {
   light: {

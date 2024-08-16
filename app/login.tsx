@@ -11,6 +11,8 @@ import {CustomInput} from "@/components/ui/CustomInput";
 import {ERROR_COLOR} from "@/constants/Colors";
 import {CustomButton} from "@/components/ui/CustomButton";
 import {useAppContext} from "@/context/AppContext";
+import {EMAIL_RULES, PASSWORD_RULES} from "@/constants/login";
+import {getErrorMessage} from "@/helpers/login";
 
 export default function LoginModal () {
     const { loginLocally } = useAppContext();
@@ -38,6 +40,7 @@ export default function LoginModal () {
             const json = await response.json();
 
             if ('error' in json) {
+                // TODO: make the proper text field errored
                 Toast.show(json.error, {
                     backgroundColor: ERROR_COLOR,
                     shadow: false,
@@ -51,27 +54,12 @@ export default function LoginModal () {
         }
     })
 
-    const getErrorMessage = (type: string) => {
-        switch (type) {
-            case 'pattern':
-                return `Doesn't look like an email`;
-            case 'minLength':
-                return 'Too short'
-            case 'required':
-            default:
-                return 'Required';
-        }
-    }
-
     return (
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={{ minWidth: 300 }}>
                 <CustomInput
                     control={control}
-                    rules={{
-                        required: true,
-                        pattern: /^[-.\w]+@([\w-]+\.)+[\w-]{2,12}$/,
-                    }}
+                    rules={EMAIL_RULES}
                     errorMessage={!!errors.email?.type ? getErrorMessage(errors.email.type) : ''}
                     placeholder={'Email'}
                     name={'email'}
@@ -79,10 +67,7 @@ export default function LoginModal () {
 
                 <CustomInput
                     control={control}
-                    rules={{
-                        required: true,
-                        minLength: 3,
-                    }}
+                    rules={PASSWORD_RULES}
                     errorMessage={!!errors.password?.type ? getErrorMessage(errors.password.type) : ''}
                     placeholder={'Password'}
                     name={'password'}
@@ -99,6 +84,7 @@ export default function LoginModal () {
                     <CustomButton
                         type={'transparent'}
                         text={'Register'}
+                        onPress={() => router.navigate('/register')}
                     />
                 </View>
             </View>

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+import {StyleSheet, Text, ImageBackground, ScrollView} from 'react-native';
 import {useEffect, useState} from "react";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {Category} from "@/components/Category";
@@ -22,7 +22,7 @@ export default function HomeScreen() {
           >
               <Text style={styles.title}>Soft skills trainer</Text>
           </ImageBackground>
-          <View style={styles.categoryContainer}>
+          <ScrollView style={styles.categoryContainer}>
               {categories.map(({ id, title }) => (
                   <Category
                       title={title}
@@ -32,8 +32,7 @@ export default function HomeScreen() {
                       setSelectedTaskId={setSelectedTaskId}
                   />
               ))}
-          </View>
-
+          </ScrollView>
       </SafeAreaView>
   );
 }

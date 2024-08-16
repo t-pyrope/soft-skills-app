@@ -1,6 +1,6 @@
 import {createContext, ReactNode, useCallback, useContext, useEffect, useState} from "react";
 import {deleteValueFromSecureStore, getValueFromSecureStore, saveToSecureStore} from "@/helpers/secure-store";
-import {deleteValueFromAsyncStore, getValueFromAsyncStore, saveToAsyncStore} from "@/helpers/async-store";
+import {deleteValueFromAsyncStore, saveToAsyncStore} from "@/helpers/async-store";
 import {API} from "@/constants/API";
 
 type AppContextType = {
@@ -46,7 +46,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             if ('email' in meJSON && 'displayName' in meJSON) {
                 setToken(tokenValue);
                 setEmail(meJSON.email);
-                setDisplayName(meJSON);
+                setDisplayName(meJSON.displayName);
             } else {
                 await deleteValueFromSecureStore('token');
                 await deleteValueFromAsyncStore('email');
