@@ -7,7 +7,11 @@ import { API } from '@/constants/API';
 
 export default function HomeScreen() {
     const [selectedTaskId, setSelectedTaskId] = useState<null | string>(null);
-    const [categories, setCategories] = useState<{ title: string; id: string }[]>([]);
+    const [categories, setCategories] = useState<{ title: string; id: string, tasks: {
+            id: string;
+            src: string;
+            text: string;
+        }[] }[]>([]);
 
     useEffect(() => {
         fetch(`${API}/categories`)
@@ -21,10 +25,10 @@ export default function HomeScreen() {
                 <Text style={styles.title}>Soft skills trainer</Text>
             </ImageBackground>
             <ScrollView style={styles.categoryContainer}>
-                {categories.map(({ id, title }) => (
+                {categories.map(({ id, title, tasks }) => (
                     <Category
                         title={title}
-                        id={id}
+                        tasks={tasks}
                         key={id}
                         selectedTaskId={selectedTaskId}
                         setSelectedTaskId={setSelectedTaskId}
