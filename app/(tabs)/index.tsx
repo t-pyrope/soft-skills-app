@@ -1,9 +1,10 @@
 import { StyleSheet, Text, ImageBackground, ScrollView } from 'react-native';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Category } from '@/components/Category';
 import { API } from '@/constants/API';
+import { TaskExpanded } from '@/components/TaskExpanded';
 
 export default function HomeScreen() {
     const [selectedTaskId, setSelectedTaskId] = useState<null | string>(null);
@@ -12,6 +13,8 @@ export default function HomeScreen() {
             src: string;
             text: string;
         }[] }[]>([]);
+    const tasks = categories.map((category) => category.tasks).flat();
+    const selectedTask = selectedTaskId ? tasks.find((task) => task.id === selectedTaskId) : null;
 
     useEffect(() => {
         fetch(`${API}/categories`)
@@ -30,18 +33,24 @@ export default function HomeScreen() {
                         title={title}
                         tasks={tasks}
                         key={id}
-                        selectedTaskId={selectedTaskId}
                         setSelectedTaskId={setSelectedTaskId}
                     />
                 ))}
             </ScrollView>
+            {!!selectedTask && (
+                <TaskExpanded
+                    src={selectedTask.src}
+                    text={selectedTask.text}
+                    setSelectedTaskId={setSelectedTaskId}
+                />
+            )}
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
+        marginBottom: 60,
         gap: 8,
         position: 'static',
     },
@@ -57,6 +66,7 @@ const styles = StyleSheet.create({
     },
     categoryContainer: {
         paddingTop: 20,
-        position: 'static',
+        padding: 10,
+
     },
 });

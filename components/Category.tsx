@@ -2,12 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Task } from '@/components/Task';
-import { TaskExpanded } from '@/components/TaskExpanded';
 
 export const Category = ({
     title,
     tasks,
-    selectedTaskId,
     setSelectedTaskId,
 }: {
     title: string;
@@ -16,14 +14,10 @@ export const Category = ({
         src: string;
         text: string;
     }[];
-    selectedTaskId: null | string;
     setSelectedTaskId: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
-    const selectedTask =
-        selectedTaskId && tasks.length ? tasks.find((task) => task.id === selectedTaskId) : null;
-
     return (
-        <View style={{ position: 'static' }}>
+        <View style={{ paddingBottom: 40 }}>
             <Text style={styles.title}>{title}</Text>
             <View style={styles.tasksContainer}>
                 {tasks.map(({ id, src, text }) => (
@@ -36,14 +30,6 @@ export const Category = ({
                     />
                 ))}
             </View>
-            {!!selectedTask && (
-                <TaskExpanded
-                    id={selectedTask.id}
-                    src={selectedTask.src}
-                    text={selectedTask.text}
-                    setSelectedTaskId={setSelectedTaskId}
-                />
-            )}
         </View>
     );
 };
