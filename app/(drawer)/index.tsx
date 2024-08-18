@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Category } from '@/components/Category';
 import { API } from '@/constants/API';
 import { TaskExpanded } from '@/components/TaskExpanded';
+import { Header } from '@/components/Header';
 
 export default function HomeScreen() {
     const [selectedTaskId, setSelectedTaskId] = useState<null | string>(null);
@@ -25,9 +26,7 @@ export default function HomeScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ImageBackground source={require('../../assets/images/intro.jpg')} style={styles.intro}>
-                <Text style={styles.title}>Soft skills trainer</Text>
-            </ImageBackground>
+            <Header />
             <ScrollView style={styles.categoryContainer}>
                 {categories.map(({ id, title, tasks }) => (
                     <Category
@@ -59,12 +58,13 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         color: 'white',
+        marginLeft: 14,
     },
     intro: {
         width: '100%',
         height: 90,
         padding: 6,
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
     },
     categoryContainer: {
         paddingTop: 20,

@@ -3,7 +3,6 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import 'react-native-reanimated';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -35,7 +34,6 @@ export default function RootLayout() {
                 <RootSiblingParent>
                     <SafeAreaProvider>
                         <Stack>
-                            <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
                             <Stack.Screen name='+not-found' />
                             <Stack.Screen
                                 name='login'
@@ -50,6 +48,10 @@ export default function RootLayout() {
                                     title: 'Register',
                                     presentation: 'modal',
                                 }}
+                            />
+                            <Stack.Screen
+                                name='(drawer)'
+                                options={{ headerShown: false }}
                             />
                         </Stack>
                     </SafeAreaProvider>
