@@ -13,6 +13,7 @@ export default function HomeScreen() {
             src: string;
             text: string;
         }[] }[]>([]);
+
     const tasks = categories.map((category) => category.tasks).flat();
     const selectedTask = selectedTaskId ? tasks.find((task) => task.id === selectedTaskId) : null;
 
@@ -41,6 +42,7 @@ export default function HomeScreen() {
                 <TaskExpanded
                     src={selectedTask.src}
                     text={selectedTask.text}
+                    id={selectedTask.id}
                     setSelectedTaskId={setSelectedTaskId}
                 />
             )}

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 import {
     deleteValueFromSecureStore,
     getValueFromSecureStore,
@@ -6,21 +6,26 @@ import {
 } from '@/helpers/secure-store';
 import { deleteValueFromAsyncStore, saveToAsyncStore } from '@/helpers/async-store';
 import { API } from '@/constants/API';
+import { DoneTask } from '@/types';
 
 type AppContextType = {
     token: string;
     displayName: string;
     email: string;
+    doneTasks: DoneTask[];
     logoutLocally: () => void;
     loginLocally: (token: string, email: string, displayName: string) => void;
+    setDoneTasks: Dispatch<SetStateAction<DoneTask[]>>;
 };
 
 const initialContext: AppContextType = {
     token: '',
     displayName: '',
     email: '',
+    doneTasks: [],
     logoutLocally: () => {},
     loginLocally: () => {},
+    setDoneTasks: () => {},
 };
 
 const AppContext = createContext(initialContext);
@@ -29,6 +34,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState('');
     const [displayName, setDisplayName] = useState('Red bunny');
     const [email, setEmail] = useState('');
+    const [doneTasks, setDoneTasks] = useState<DoneTask[]>([])
 
     const setValues = async () => {
         try {
@@ -51,6 +57,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
                 setToken(tokenValue);
                 setEmail(meJSON.email);
                 setDisplayName(meJSON.displayName);
+                setDoneTasks(meJSON.doneTasks);
             } else {
                 await deleteValueFromSecureStore('token');
                 await deleteValueFromAsyncStore('email');
@@ -97,6 +104,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
                 email,
                 logoutLocally,
                 loginLocally,
+                doneTasks,
+                setDoneTasks,
             }}
         >
             {children}
