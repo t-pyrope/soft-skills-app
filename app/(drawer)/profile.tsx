@@ -7,6 +7,7 @@ import { CustomButton } from '@/components/ui/CustomButton';
 import { API } from '@/constants/API';
 import { useAppContext } from '@/context/AppContext';
 import { Header } from '@/components/Header';
+import { TasksGraph } from '@/components/TasksGraph';
 
 export default function TabTwoScreen() {
     const { token, displayName, logoutLocally } = useAppContext();
@@ -66,6 +67,11 @@ export default function TabTwoScreen() {
                         onPress={logout}
                     />
                 )}
+
+                <View style={{ marginTop: 24, gap: 8 }}>
+                    <Text style={styles.title}>Statistics</Text>
+                    <TasksGraph />
+                </View>
             </View>
         </SafeAreaView>
     );
@@ -82,5 +88,8 @@ const styles = StyleSheet.create({
     link: {
         textDecorationLine: 'underline',
         color: '',
+    },
+    title: {
+        fontSize: 18,
     },
 });
