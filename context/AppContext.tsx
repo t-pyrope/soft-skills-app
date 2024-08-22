@@ -1,4 +1,13 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
+import {
+    createContext,
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import {
     deleteValueFromSecureStore,
     getValueFromSecureStore,
@@ -6,12 +15,14 @@ import {
 } from '@/helpers/secure-store';
 import { deleteValueFromAsyncStore, saveToAsyncStore } from '@/helpers/async-store';
 import { API } from '@/constants/API';
-import { DoneTask } from '@/types';
+import { DoneTask, Preferences } from '@/types';
+import { getLocales } from 'expo-localization';
 
 type AppContextType = {
     token: string;
     displayName: string;
     email: string;
+    preferences: Preferences;
     doneTasks: DoneTask[];
     logoutLocally: () => void;
     loginLocally: (token: string, email: string, displayName: string) => void;
@@ -22,6 +33,7 @@ const initialContext: AppContextType = {
     token: '',
     displayName: '',
     email: '',
+    preferences: { showDone: false, locale: 'en' },
     doneTasks: [],
     logoutLocally: () => {},
     loginLocally: () => {},
@@ -31,10 +43,19 @@ const initialContext: AppContextType = {
 const AppContext = createContext(initialContext);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
+    const locales = getLocales();
+    const locale =
+        locales.find((locale) => ['en', 'ru', 'cs'].includes(locale.languageCode ?? ''))
+            ?.languageCode ?? 'en';
+
     const [token, setToken] = useState('');
     const [displayName, setDisplayName] = useState('Red bunny');
     const [email, setEmail] = useState('');
-    const [doneTasks, setDoneTasks] = useState<DoneTask[]>([])
+    const [doneTasks, setDoneTasks] = useState<DoneTask[]>([]);
+    const [preferences, setPreferences] = useState<Preferences>({
+        showDone: false,
+        locale,
+    });
 
     const setValues = async () => {
         try {
@@ -58,6 +79,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
                 setEmail(meJSON.email);
                 setDisplayName(meJSON.displayName);
                 setDoneTasks(meJSON.doneTasks);
+                setPreferences({ ...preferences, ...meJSON.preferences });
             } else {
                 await deleteValueFromSecureStore('token');
                 await deleteValueFromAsyncStore('email');
@@ -102,6 +124,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
                 token,
                 displayName,
                 email,
+                preferences,
                 logoutLocally,
                 loginLocally,
                 doneTasks,

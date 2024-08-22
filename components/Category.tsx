@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Task } from '@/components/Task';
+import { CategoryTask } from '@/types';
 
 export const Category = ({
     title,
@@ -9,11 +10,7 @@ export const Category = ({
     setSelectedTaskId,
 }: {
     title: string;
-    tasks: {
-        id: string;
-        src: string;
-        text: string;
-    }[];
+    tasks: CategoryTask[];
     setSelectedTaskId: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
     return (
@@ -21,13 +18,7 @@ export const Category = ({
             <Text style={styles.title}>{title}</Text>
             <View style={styles.tasksContainer}>
                 {tasks.map(({ id, src, text }) => (
-                    <Task
-                        id={id}
-                        src={src}
-                        text={text}
-                        key={id}
-                        setSelectedTaskId={setSelectedTaskId}
-                    />
+                    <Task id={id} src={src} key={id} setSelectedTaskId={setSelectedTaskId} />
                 ))}
             </View>
         </View>

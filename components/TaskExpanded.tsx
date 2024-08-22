@@ -12,12 +12,13 @@ export const TaskExpanded = ({
     setSelectedTaskId,
 }: {
     src: string;
-    text: string;
+    text: { [key: string]: string };
     id: string;
     setSelectedTaskId: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
-    const { doneTasks, setDoneTasks, token } = useAppContext();
+    const { doneTasks, setDoneTasks, token, preferences } = useAppContext();
     const isLogged = !!token;
+    const { locale } = preferences;
 
     const isDone = !!doneTasks.find((task) => task.id === id);
 
@@ -34,14 +35,14 @@ export const TaskExpanded = ({
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ taskId: id }),
-            })
+            });
 
             const json = await response.json();
             setDoneTasks(json.user.doneTasks);
         } catch (e) {
             console.error(e);
         }
-    }
+    };
 
     return (
         <View
@@ -57,14 +58,17 @@ export const TaskExpanded = ({
                 justifyContent: 'center',
             }}
         >
-            <Pressable onPress={close} style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                backgroundColor: 'rgba(0,0,0,0.65)',
-            }} />
+            <Pressable
+                onPress={close}
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: 'rgba(0,0,0,0.65)',
+                }}
+            />
             <View style={{ backgroundColor: '#ffffff', padding: 10, width: '80%', gap: 10 }}>
                 <View style={{ height: 33, position: 'absolute', top: 5, right: 5 }}>
                     <FontAwesome.Button
@@ -79,7 +83,7 @@ export const TaskExpanded = ({
                     source={{ uri: src }}
                     style={{ width: 100, height: 100, borderRadius: 10 }}
                 />
-                <Text>{text}</Text>
+                <Text>{text[locale]}</Text>
                 {isLogged && (
                     <CustomButton
                         text={isDone ? 'Mark as undone' : 'Done'}

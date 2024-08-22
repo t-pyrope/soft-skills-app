@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -6,14 +6,13 @@ import { Category } from '@/components/Category';
 import { API } from '@/constants/API';
 import { TaskExpanded } from '@/components/TaskExpanded';
 import { Header } from '@/components/Header';
+import { CategoryTask } from '@/types';
 
 export default function HomeScreen() {
     const [selectedTaskId, setSelectedTaskId] = useState<null | string>(null);
-    const [categories, setCategories] = useState<{ title: string; id: string, tasks: {
-            id: string;
-            src: string;
-            text: string;
-        }[] }[]>([]);
+    const [categories, setCategories] = useState<
+        { title: string; id: string; tasks: CategoryTask[] }[]
+    >([]);
 
     const tasks = categories.map((category) => category.tasks).flat();
     const selectedTask = selectedTaskId ? tasks.find((task) => task.id === selectedTaskId) : null;
@@ -69,6 +68,5 @@ const styles = StyleSheet.create({
     categoryContainer: {
         paddingTop: 20,
         padding: 10,
-
     },
 });
