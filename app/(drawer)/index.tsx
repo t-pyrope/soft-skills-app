@@ -11,7 +11,7 @@ import { CategoryTask } from '@/types';
 export default function HomeScreen() {
     const [selectedTaskId, setSelectedTaskId] = useState<null | string>(null);
     const [categories, setCategories] = useState<
-        { title: string; id: string; tasks: CategoryTask[] }[]
+        { title: {[key: string]: string}; id: string; tasks: CategoryTask[] }[]
     >([]);
 
     const tasks = categories.map((category) => category.tasks).flat();
