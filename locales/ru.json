@@ -1,0 +1,13 @@
+{
+  "home": "Домой",
+  "profile": "Профиль",
+
+  "login": "Войти",
+  "register": "Регистрация",
+  "logout": "Выйти",
+
+  "email": "Email",
+  "password": "Пароль",
+  "displayName": "Имя",
+  "statistics": "Статистика"
+}

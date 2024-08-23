@@ -8,13 +8,14 @@ import { API } from '@/constants/API';
 import { useAppContext } from '@/context/AppContext';
 import { Header } from '@/components/Header';
 import { TasksGraph } from '@/components/TasksGraph';
+import { i18n } from '@/locales/i18n';
 
 export default function TabTwoScreen() {
     const { token, displayName, logoutLocally } = useAppContext();
 
     const data = [
-        { id: 'login', title: 'Login' },
-        { id: 'register', title: 'Register' },
+        { id: 'login', title: i18n.t('login') },
+        { id: 'register', title: i18n.t('register') },
     ];
 
     const logout = async () => {
@@ -61,7 +62,7 @@ export default function TabTwoScreen() {
                     />
                 ) : (
                     <CustomButton
-                        text={'Log out'}
+                        text={i18n.t('logout')}
                         size={'small'}
                         type={'transparent'}
                         onPress={logout}
@@ -69,7 +70,7 @@ export default function TabTwoScreen() {
                 )}
 
                 <View style={{ marginTop: 24, gap: 8 }}>
-                    <Text style={styles.title}>Statistics</Text>
+                    <Text style={styles.title}>{i18n.t('statistics')}</Text>
                     <TasksGraph />
                 </View>
             </View>

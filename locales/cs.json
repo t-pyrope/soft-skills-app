@@ -1,0 +1,13 @@
+{
+  "home": "Domů",
+  "profile": "Profil",
+
+  "login": "Přihlásit se",
+  "register": "Registrovat se",
+  "logout": "Odhlásit se",
+
+  "email": "Email",
+  "password": "Heslo",
+  "displayName": "Jméno",
+  "statistics": "Statistika"
+}

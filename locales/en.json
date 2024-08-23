@@ -1,0 +1,13 @@
+{
+  "home": "Home",
+  "profile": "Profile",
+
+  "login": "Login",
+  "register": "Register",
+  "logout": "Log out",
+
+  "email": "Email",
+  "password": "Password",
+  "displayName": "Name to display",
+  "statistics": "Statistics"
+}

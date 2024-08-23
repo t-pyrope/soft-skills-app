@@ -16,7 +16,9 @@ import {
 import { deleteValueFromAsyncStore, saveToAsyncStore } from '@/helpers/async-store';
 import { API } from '@/constants/API';
 import { DoneTask, Preferences } from '@/types';
-import { getLocales } from 'expo-localization';
+import { i18n } from '@/locales/i18n';
+import { initialLocale } from '@/constants/locales';
+import { i18n as dFI18n } from "dateformat";
 
 type AppContextType = {
     token: string;
@@ -43,10 +45,6 @@ const initialContext: AppContextType = {
 const AppContext = createContext(initialContext);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-    const locales = getLocales();
-    const locale =
-        locales.find((locale) => ['en', 'ru', 'cs'].includes(locale.languageCode ?? ''))
-            ?.languageCode ?? 'en';
 
     const [token, setToken] = useState('');
     const [displayName, setDisplayName] = useState('Red bunny');
@@ -54,7 +52,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     const [doneTasks, setDoneTasks] = useState<DoneTask[]>([]);
     const [preferences, setPreferences] = useState<Preferences>({
         showDone: false,
-        locale,
+        locale: initialLocale,
     });
 
     const setValues = async () => {
@@ -79,7 +77,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
                 setEmail(meJSON.email);
                 setDisplayName(meJSON.displayName);
                 setDoneTasks(meJSON.doneTasks);
-                setPreferences({ ...preferences, ...meJSON.preferences });
+
+                const newPreferences = { ...preferences, ...meJSON.preferences };
+                setPreferences(newPreferences);
+                i18n.locale = newPreferences.locale;
             } else {
                 await deleteValueFromSecureStore('token');
                 await deleteValueFromAsyncStore('email');
@@ -93,6 +94,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         setValues();
     }, []);
+
+    useEffect(() => {
+        i18n.locale = preferences.locale;
+    }, [preferences.locale]);
 
     const logoutLocally = useCallback(async () => {
         setToken('');

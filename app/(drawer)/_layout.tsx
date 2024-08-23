@@ -1,5 +1,6 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
+import { i18n } from '@/locales/i18n';
 
 export default function Layout() {
     return (
@@ -8,7 +9,7 @@ export default function Layout() {
                 <Drawer.Screen
                     name={"index"}
                     options={{
-                        title: 'Home',
+                        title: i18n.t('home'),
                         headerShown: false,
                     }}
                 />
@@ -16,7 +17,7 @@ export default function Layout() {
                 <Drawer.Screen
                     name='profile'
                     options={{
-                        title: 'Profile',
+                        title: i18n.t('profile'),
                         headerShown: false,
                     }}
                 />

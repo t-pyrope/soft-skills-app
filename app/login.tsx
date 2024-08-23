@@ -13,6 +13,7 @@ import { CustomButton } from '@/components/ui/CustomButton';
 import { useAppContext } from '@/context/AppContext';
 import { EMAIL_RULES, PASSWORD_RULES } from '@/constants/login';
 import { getErrorMessage } from '@/helpers/login';
+import { i18n } from '@/locales/i18n';
 
 export default function LoginModal() {
     const { loginLocally } = useAppContext();
@@ -79,13 +80,13 @@ export default function LoginModal() {
                     <CustomButton
                         onPress={onSubmit}
                         disabled={!isDirty || Object.keys(errors).length > 0}
-                        text={'Login'}
+                        text={i18n.t('login')}
                     />
                 </View>
                 <View style={{ marginTop: 4 }}>
                     <CustomButton
                         type={'transparent'}
-                        text={'Register'}
+                        text={i18n.t('register')}
                         onPress={() => router.navigate('/register')}
                     />
                 </View>
